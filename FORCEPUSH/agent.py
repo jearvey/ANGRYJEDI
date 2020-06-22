@@ -1,10 +1,23 @@
 import socket
 import sys
 import json
+import time
+
+time.sleep(0)
+
+MsgNum = 0
+def GenMsg(x):
+    if (x == 0):
+        NewMsg = b'{"id": 0, "name": "FORCEPUSH", "Type": "initialize"}'
+    else:
+        NewMsg = b"tbd"
+    return NewMsg
+
+
 
 HOST, PORT = "localhost", 1776
 
-m = b'{"id": 1, "name": "FORCEPUSH"}'
+Msg = GenMsg(MsgNum)
 
 # Create a socket (SOCK_STREAM means a TCP socket)
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -12,7 +25,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
     # Connect to server and send data
     sock.connect((HOST, PORT))
-    sock.sendall(m)
+    sock.sendall(Msg)
 
 
     # Receive data from the server and shut down
@@ -20,5 +33,5 @@ try:
 finally:
     sock.close()
 
-print("Sent:     {}".format(m))
+print("Sent:     {}".format(Msg))
 print("Received: {}".format(received))
