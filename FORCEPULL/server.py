@@ -23,16 +23,17 @@ while True:
         # Receive the data in small chunks and retransmit it
         while True:
             data = connection.recv(4096)
-            print(data)
-            jsonobj = json.loads(data)
-            print('received {!r}'.format(jsonobj))
-            if jsonobj:
-                print('sending data back to the client')
-                newmessage = b"Got Results, sending new Task"
-                connection.sendall(newmessage)
-            else:
-                print('no data from', client_address)
-                break
+            if data:
+                print("Got data:", data)
+                jsonobj = json.loads(data) 
+                print('received {!r}'.format(jsonobj))
+                if jsonobj:
+                    print('sending data back to the client')
+                    newmessage = b"Got Results, sending new Task"
+                    connection.sendall(newmessage)
+                else:
+                    print('no data from', client_address)
+                    break
 
     finally:
         # Clean up the connection

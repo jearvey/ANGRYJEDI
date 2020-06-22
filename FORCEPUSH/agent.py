@@ -4,7 +4,7 @@ import json
 
 HOST, PORT = "localhost", 1776
 
-m =b'{"id": 1, "name": "FORCEPUSH"}'
+m = b'{"id": 1, "name": "FORCEPUSH"}'
 
 # Create a socket (SOCK_STREAM means a TCP socket)
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,5 +20,5 @@ try:
 finally:
     sock.close()
 
-print("Sent:     {}".format(data))
+print("Sent:     {}".format(m))
 print("Received: {}".format(received))
