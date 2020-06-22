@@ -34,6 +34,8 @@ while True:
                 else:
                     print('no data from', client_address)
                     break
+            else:
+                break
 
     finally:
         # Clean up the connection
