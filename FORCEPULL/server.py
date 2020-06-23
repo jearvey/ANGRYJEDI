@@ -1,42 +1,37 @@
 import socket
-import sys
-import json
+from _thread import *
+import threading 
+import message  
 
-# Create a TCP/IP socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# Bind the socket to the port
-server_address = ('localhost', 1776)
-print('starting up on {} port {}'.format(*server_address))
-sock.bind(server_address)
-
-# Listen for incoming connections
-sock.listen(1)
-
-while True:
-    # Wait for a connection
-    print('waiting for a connection')
-    connection, client_address = sock.accept()
-    try:
-        print('connection from', client_address)
-
-        # Receive the data in small chunks and retransmit it
-        while True:
-            data = connection.recv(4096)
-            if data:
-                print("Got data:", data)
-                jsonobj = json.loads(data) 
-                print('received {!r}'.format(jsonobj))
-                if jsonobj:
-                    print('sending data back to the client')
-                    newmessage = b"Got Results, sending new Task"
-                    connection.sendall(newmessage)
-                else:
-                    print('no data from', client_address)
-                    break
-            else:
-                break
-
-    finally:
-        # Clean up the connection
-        connection.close()
+print_lock = threading.Lock() 
+ 
+def threaded(c): 
+    while True: 
+        data = c.recv(1024) 
+        if not data: 
+            print('No data received') 
+            print_lock.release() 
+            break 
+        reply = c.message(data)
+        c.send(reply) 
+    c.close() 
+  
+  
+def Main(): 
+    host = "localhost" 
+    port = 1776
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+    s.bind((host, port)) 
+    print("socket binded to port", port) 
+    s.listen(5) 
+    print("socket is listening") 
+    while True: 
+        c, addr = s.accept() 
+        print_lock.acquire() 
+        print('Connected to :', addr[0], ':', addr[1]) 
+        start_new_thread(threaded, (c,)) 
+    s.close() 
+  
+  
+if __name__ == '__main__': 
+    Main() 

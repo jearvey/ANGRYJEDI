@@ -4,11 +4,11 @@ import json
 import time
 
 time.sleep(0)
-
+uuid = "4185a833-002a-4ccd-883a-de75b3bbdb12"
 MsgNum = 0
 def GenMsg(x):
-    if (x == 0):
-        NewMsg = b'{"id": 0, "name": "FORCEPUSH", "Type": "initialize"}'
+    if (x == 0):\
+        NewMsg = b'{{"id": 0, "name": "{%s}", "Type": "init"}}'.format(uuid)
     else:
         NewMsg = b"tbd"
     return NewMsg
