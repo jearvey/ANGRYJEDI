@@ -8,7 +8,7 @@ uuid = "4185a833-002a-4ccd-883a-de75b3bbdb12"
 MsgNum = 0
 def GenMsg(x):
     if (x == 0):\
-        NewMsg = b'{{"id": 0, "name": "{%s}", "Type": "init"}}'.format(uuid)
+        NewMsg = b'{{"id": 0, "name": "test", "Type": "init"}}'.format(uuid)
     else:
         NewMsg = b"tbd"
     return NewMsg
