@@ -12,7 +12,7 @@ def threaded(c):
             print('No data received') 
             print_lock.release() 
             break 
-        reply = c.message(data)
+        reply = message.BuildTask(data)
         c.send(reply) 
     c.close() 
   

@@ -1,10 +1,12 @@
 import json
 
 def BuildTask(data):
-    reply = json.load(data)
-    newid = json.reply['id'] + 1
-    newdic = {"id": newid}
-    if (json.reply['Type'] == 'init'):
+    raw_reply = data.decode()
+    reply = json.loads(raw_reply)
+    #reply = reply1.replace("'","")
+    #newid = reply[id] + 1
+    #newdic = {"id":newid}
+    print(reply)
+    if (reply["Type"] == "init"):
         task = b'{"id": 1, "task": "uname -a"}'
-    #elif - to do
     return task

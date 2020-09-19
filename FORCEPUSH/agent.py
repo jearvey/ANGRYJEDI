@@ -2,13 +2,14 @@ import socket
 import sys
 import json
 import time
+import uuid
 
 time.sleep(0)
-uuid = "4185a833-002a-4ccd-883a-de75b3bbdb12"
+uuid = uuid.uuid4()
 MsgNum = 0
 def GenMsg(x):
     if (x == 0):\
-        NewMsg = b'{{"id": 0, "name": "test", "Type": "init"}}'.format(uuid)
+        NewMsg = b'{{"id": 0, "name": "test", "Type": "init"}}i'
     else:
         NewMsg = b"tbd"
     return NewMsg
