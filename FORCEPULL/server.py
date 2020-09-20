@@ -7,7 +7,7 @@ print_lock = threading.Lock()
  
 def threaded(c): 
     while True: 
-        data = c.recv(1024) 
+        data = c.recv(4096) 
         if not data: 
             print('No data received') 
             print_lock.release() 
