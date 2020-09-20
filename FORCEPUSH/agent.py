@@ -9,15 +9,19 @@ time.sleep(0)
 uuid = uuid.uuid4()
 MsgNum = 0
 
+def tojson(uuid,data):
+    uuid = uuid + 1
+    json_to_load = {"id": uuid, "name": "test", "Type": "response", "data": data}
+    NewMsg = json.dumps(json_to_load)
+    return NewMsg
+
 def GenMsg(x):
     if (x == 0):
         NewMsgJ = '{"id": 0, "name": "test", "Type": "init"}'
         NewMsg = str.encode(NewMsgJ)
     else:
         reformat = x.split(" ")
-        print(reformat)
         output = subprocess.Popen(reformat,stdout=subprocess.PIPE).communicate()[0]
-        print(output)
         NewMsg = output.decode("utf-8")
     return NewMsg
 
@@ -39,7 +43,8 @@ while True:
         receive = json.loads(raw_received)
         if (receive["task"] != "quit"):
             MsgDraft = GenMsg(receive["task"])
-            Msg = str.encode(MsgDraft)
+            MsgJson = tojson(receive["id"],MsgDraft)
+            Msg = str.encode(MsgJson)
         else:
             exit()
 
