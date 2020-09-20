@@ -9,11 +9,24 @@ time.sleep(0)
 uuid = uuid.uuid4()
 MsgNum = 0
 
-def tojson(uuid,data):
+# need to actually do this part
+
+
+def admin(todo, value=0):
+    if (todo == "ChangeTimer"):
+        result = "Time Changed by " + str(value) + " hours"
+    elif (todo == "ViewTimer"):
+        result = "Current Time"
+    return result
+
+
+def tojson(uuid, data):
     uuid = uuid + 1
-    json_to_load = {"id": uuid, "name": "test", "Type": "response", "data": data}
+    json_to_load = {"id": uuid, "name": "test",
+        "Type": "response", "data": data}
     NewMsg = json.dumps(json_to_load)
     return NewMsg
+
 
 def GenMsg(x):
     if (x == 0):
@@ -21,7 +34,8 @@ def GenMsg(x):
         NewMsg = str.encode(NewMsgJ)
     else:
         reformat = x.split(" ")
-        output = subprocess.Popen(reformat,stdout=subprocess.PIPE).communicate()[0]
+        output = subprocess.Popen(
+            reformat, stdout=subprocess.PIPE).communicate()[0]
         NewMsg = output.decode("utf-8")
     return NewMsg
 
@@ -41,9 +55,16 @@ while True:
         print("Recevied:    {}".format(received))
         raw_received = received.decode()
         receive = json.loads(raw_received)
-        if (receive["task"] != "quit"):
+        if (receive["task"] == "admin_tasker"):
+            if ("value" in receive):
+                MsgDraft = admin(receive["Type"], receive["value"])
+            else:
+                MsgDraft = admin(receive["Type"])
+            MsgJson = tojson(receive["id"], MsgDraft)
+            Msg = str.encode(MsgJson)
+        elif (receive["task"] != "quit"):
             MsgDraft = GenMsg(receive["task"])
-            MsgJson = tojson(receive["id"],MsgDraft)
+            MsgJson = tojson(receive["id"], MsgDraft)
             Msg = str.encode(MsgJson)
         else:
             exit()
