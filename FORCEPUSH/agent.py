@@ -5,18 +5,18 @@ import time
 import uuid
 import subprocess
 
-time.sleep(0)
 uuid = uuid.uuid4()
 MsgNum = 0
+sleepytime = 0
 
-# need to actually do this part
-
+def sleepy(sleeptime):
+    time.sleep(sleeptime)
 
 def admin(todo, value=0):
     if (todo == "ChangeTimer"):
-        result = "Time Changed by " + str(value) + " hours"
+        result = "Time Changed to " + str(value) + " hours"
     elif (todo == "ViewTimer"):
-        result = "Current Time"
+        result = "Current callback time is " + str(sleepytime/60) + " hours"
     return result
 
 
@@ -58,6 +58,9 @@ while True:
         if (receive["task"] == "admin_tasker"):
             if ("value" in receive):
                 MsgDraft = admin(receive["Type"], receive["value"])
+                sleepytime = receive["value"]
+            elif (receive["task"] == "admin_sleep"):
+                sleepy(receive["value"])
             else:
                 MsgDraft = admin(receive["Type"])
             MsgJson = tojson(receive["id"], MsgDraft)
@@ -71,6 +74,7 @@ while True:
 
     finally:
         sock.close()
+    sleepy(sleepytime)
     continue
 
 print("Closing...")
