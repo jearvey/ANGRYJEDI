@@ -9,7 +9,7 @@ def threaded(c):
     while True: 
         data = c.recv(4096) 
         if not data: 
-            print('No data received') 
+            #print('No data received') 
             print_lock.release() 
             break 
         reply = message.BuildTask(data)
@@ -28,7 +28,7 @@ def Main():
     while True: 
         c, addr = s.accept() 
         print_lock.acquire() 
-        print('Connected to :', addr[0], ':', addr[1]) 
+        #print('Connected to :', addr[0], ':', addr[1]) 
         start_new_thread(threaded, (c,)) 
     s.close() 
   
