@@ -10,9 +10,10 @@ CREATE TABLE agents(
 CREATE TABLE agent_callback(
   id VARCHAR PRIMARY KEY,
   callback_id INTEGER NOT NULL,
-  last_callback TEXT NOT NULL,
-  next_callback TEXT NULL,
-  callback_timer INTEGER NULL
+  last_callback VARCHAR NOT NULL,
+  next_callback VARCHAR NULL,
+  callback_timer INTEGER NULL,
+  FOREIGN KEY (callback_id) REFERENCES agents(callback_id)
 );
 
 CREATE TABLE agent_data(
@@ -20,7 +21,8 @@ CREATE TABLE agent_data(
   agent_id VARCHAR(26) NOT NULL,
   cmd_tasked VARCHAR NOT NULL,
   data_returned VARCHAR NULL,
-  date_time TEXT NOT NULL
+  date_time TEXT NOT NULL,
+  FOREIGN KEY (agent_id) REFERENCES agents(agent_id)
 );
 
 CREATE TABLE agent_task(
@@ -29,7 +31,6 @@ CREATE TABLE agent_task(
   type VARCHAR NULL,
   value VARCHAR NULL,
   cmd VARCHAR NOT NULL,
-  tasked_time TEXT NOT NULL
+  tasked_time TEXT NOT NULL,
+  FOREIGN KEY (agent_id) REFERENCES agents(agent_id)
 );
-
-PRAGMA foreign_keys = ON;
