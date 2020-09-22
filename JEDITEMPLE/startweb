@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export FLASK_APP=buildweb.py
+flask run
