@@ -1,5 +1,7 @@
+import sys
+sys.path.append('../JEDIARCHIVES')
 import json
-
+import dbcontroller
 
 def BuildTask(data):
     raw_reply = data.decode()
@@ -8,6 +10,7 @@ def BuildTask(data):
         task = {"id": 1, "task": "uname -a"}
         taskjson = json.dumps(task)
         replyMsg = str.encode(taskjson)
+        dbcontroller.write_agents(reply["name"])
         print(reply)
     else:
         if ("data" in reply):
