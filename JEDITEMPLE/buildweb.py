@@ -15,7 +15,7 @@ def get_db():
 def make_dicts(cursor, row):
     return dict((cursor.description[idx][0], value)
                 for idx, value in enumerate(row))
-
+get_db()
 db.row_factory = make_dicts
 
 #easy db query, auto open and close
@@ -36,6 +36,11 @@ app = Flask(__name__)
 def hello_world():
     return "Hello Worl... how original"
 
+test = query_db('SELECT * from agents')
+if test is None:
+    print("No data in table agents")
+else:
+    print(test)
 
 @app.teardown_appxontext
 def close_connection(exception):
