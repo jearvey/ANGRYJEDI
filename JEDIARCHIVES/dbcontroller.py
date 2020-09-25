@@ -1,6 +1,7 @@
 import sqlite3
 import os.path
 
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db_location = os.path.join(BASE_DIR, "ANJE_db.sqlite")
 

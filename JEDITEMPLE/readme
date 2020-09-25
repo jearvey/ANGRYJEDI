@@ -1,3 +1,5 @@
 web API to task implants
 
 inital idea is Flask + SQLite to run it
+
+I want to build web and have an interface to query results and insert into db.
