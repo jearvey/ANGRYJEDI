@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, g, current_app
+from flask import Flask, g
 
 ###Links database and creates function to make db
 DATABASE = '/root/ANGRYJEDI/JEDIARCHIVES/ANJE_db.sqlite'
@@ -11,6 +11,8 @@ def get_db():
         db = g._database = sqlite3.connect(DATABASE)
     return db
 
+#get_db()
+#db.row_facotry=make_dicts
 
 #returns dics instead of tuples from db
 def make_dicts(cursor, row):
@@ -27,17 +29,14 @@ def query_db(query, args=(), one=False):
 
 app = Flask(__name__)
 @app.route('/')
-with app.current_app():
-    get_db()
-    db.row_factory = make_dicts
+def helllo_world():
+    test = query_db('SELECT * from agents')
+    if test is None:
+        print("No data in table agents")
+    else:
+        print(test)
 
-test = query_db('SELECT * from agents')
-if test is None:
-    print("No data in table agents")
-else:
-    print(test)
-
-@app.teardown_appxontext
+@app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
